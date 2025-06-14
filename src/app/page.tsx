@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   MiniMap,
@@ -14,10 +14,14 @@ import {
   Connection,
   BackgroundVariant,
 } from '@xyflow/react';
+
 import '@xyflow/react/dist/style.css';
 import { Play, BookOpen, ExternalLink } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import { roadmapData } from '@/data/roadmaps';
+import Navigation from '../components/Navigation';
+import roadmapData  from '../data/roadmapData';
+// interface RoadmapNodeData extends RoadmapData {
+//   onNodeClick: (data: RoadmapData) => void;
+// }
 
 // Tipos para os dados do roadmap
 interface RoadmapData {
@@ -35,9 +39,14 @@ interface RoadmapData {
     price?: string;
   }>;
 }
+type RoadmapKey = 'frontend' | 'backend' | 'fullstack' | 'cybersecurity' | 'mobile' | 'devops';
+type RoadmapNodeType = Node;
+type RoadmapEdgeType = Edge;
 
 // Componente customizado para os nós do roadmap
 const RoadmapNode = ({ data }: { data: RoadmapData & { onNodeClick: (data: RoadmapData) => void } }) => {
+
+
   return (
     <div 
       className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-stone-400 cursor-pointer hover:border-blue-500 transition-colors"
@@ -58,15 +67,38 @@ const nodeTypes = {
 };
 
 export default function Home() {
-  const [currentRoadmap, setCurrentRoadmap] = useState('frontend');
+  
+  useEffect(()=>{
+console.log("roadmapData:",roadmapData)
+},[roadmapData])
+  
+const handleshowRoadmap:any = (()=>{
+  console.log(roadmapData)
+})
+  const [currentRoadmap, setCurrentRoadmap] = useState<RoadmapKey>('frontend');
   const [selectedNode, setSelectedNode] = useState<RoadmapData | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  console.log(currentRoadmap)
 
   // Obter dados do roadmap atual
-  const currentData = roadmapData[currentRoadmap as keyof typeof roadmapData];
-  
-  const [nodes, setNodes, onNodesChange] = useNodesState(currentData.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(currentData.edges);
+   const currentData = roadmapData?.[currentRoadmap as keyof typeof roadmapData];
+
+  if (!currentData) {
+    return (
+      <>
+      <button className='cursor-pointer' onClick={handleshowRoadmap} >SHOW</button>
+    <div className="p-4 text-red-500">Roadmap não encontrado
+
+    </div></>);
+  }
+// if (!currentData) {
+//   return <div>Roadmap não encontrado</div>;
+// }\\
+  if (!roadmapData || !roadmapData[currentRoadmap]) {
+    return <div>Roadmap não encontrado ou dados não carregados</div>;
+  }
+  const [nodes, setNodes, onNodesChange] = useNodesState<RoadmapNodeType>(currentData.nodes || []);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<RoadmapEdgeType>(currentData.edges || []);
 
   const onConnect = useCallback(
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -80,7 +112,7 @@ export default function Home() {
 
   const handleRoadmapChange = useCallback((roadmapId: string) => {
     const newData = roadmapData[roadmapId as keyof typeof roadmapData];
-    setCurrentRoadmap(roadmapId);
+    setCurrentRoadmap(roadmapId as RoadmapKey);
     setNodes(newData.nodes);
     setEdges(newData.edges);
     setSidebarOpen(false);
