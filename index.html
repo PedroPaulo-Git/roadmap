@@ -1,0 +1,67 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+ .container {
+    position: relative;
+    width: 400px; /* Ajuste conforme necessário */
+    height: 200px; /* Ajuste conforme necessário */
+    border: 1px dashed #ccc; /* Para visualizar o container */
+}
+
+.node {
+    width: 100px;
+    height: 50px;
+    background-color: lightblue;
+    border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.node-A { top: 50px; left: 50px; }
+.node-B { top: 50px; left: 200px; }
+
+.connector-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa todo o container para ter as coordenadas corretas */
+    height: 100%;
+    pointer-events: none; /* Permite clicar nos nós por baixo do SVG */
+}
+
+/* Você pode estilizar as linhas SVG com CSS */
+.connector-svg line {
+    stroke: var(--line-color, black); /* Use variáveis CSS */
+    stroke-width: 2px;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="node node-A">Nó A</div>
+    <div class="node node-B">Nó B</div>
+
+    <svg class="connector-svg">
+        <line x1="100" y1="75" x2="250" y2="75" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+        
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7"
+            refX="0" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+            </marker>
+        </defs>
+    </svg>
+</div>
+</body>
+</html>
+
+
+

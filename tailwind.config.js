@@ -1,29 +1,29 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        primary: {
-          50: '#eff6ff',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-        },
-        secondary: {
-          50: '#f8fafc',
-          500: '#64748b',
-          600: '#475569',
-        }
+export const content = [
+  './src/**/*.{js,ts,jsx,tsx,mdx}', // Simplifiquei para cobrir todos os arquivos na src
+];
+export const theme = {
+  extend: {
+    colors: {
+      dashboardblack: '#D9D9D9',
+      dashboardwhite: {
+        100: '#D9D9D9' // Você quer usar isso para o texto claro
       },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+      primary: {
+        50: '#eff6ff',
+        500: '#3b82f6',
+        600: '#2563eb',
+        700: '#1d4ed8',
       },
+      secondary: {
+        50: '#f8fafc',
+        500: '#64748b',
+        600: '#475569',
+      }
+    },
+    fontFamily: {
+      sans: ['Inter', 'system-ui', 'sans-serif'],
     },
   },
-  plugins: [],
-}
+};
+export const plugins = [];
